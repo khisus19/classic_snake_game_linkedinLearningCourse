@@ -13,11 +13,33 @@ offsets = {
 }
 
 
+def go_up():
+    global snake_direction
+    if snake_direction != "down":
+        snake_direction = "up"
+
+def go_right():
+    global snake_direction
+    if snake_direction != "left":
+        snake_direction = "right"
+
+def go_left():
+    global snake_direction
+    if snake_direction != "right":
+        snake_direction = "left"
+
+def go_down():
+    global snake_direction
+    if snake_direction != "up":
+        snake_direction = "down"
+
+
 def move_snake():
     stamper.clearstamps()
 
     new_head = snake[-1].copy()
-    new_head[0] += 20
+    new_head[0] += offsets[snake_direction][0]
+    new_head[1] += offsets[snake_direction][1]
 
     # Add new head to snake body.
     snake.append(new_head)
@@ -41,6 +63,13 @@ screen.setup(WIDTH, HEIGHT)
 screen.title("Snake")
 screen.bgcolor("pink")
 screen.tracer(0)
+
+# Event handlers
+screen.listen()
+screen.onkey(go_up, "Up")
+screen.onkey(go_right, "Right")
+screen.onkey(go_down, "Down")
+screen.onkey(go_left, "Left")
 
 # Create a turtle to do your bidding
 stamper = turtle.Turtle()
