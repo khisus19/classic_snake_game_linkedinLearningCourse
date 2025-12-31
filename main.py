@@ -34,29 +34,34 @@ def go_down():
         snake_direction = "down"
 
 
-def move_snake():
+def game_loop():
     stamper.clearstamps()
 
     new_head = snake[-1].copy()
     new_head[0] += offsets[snake_direction][0]
     new_head[1] += offsets[snake_direction][1]
 
-    # Add new head to snake body.
-    snake.append(new_head)
+    # Check collisions
+    if new_head in snake or new_head[0] < - WIDTH / 2 or new_head[0] > WIDTH / 2 or new_head[1] < - HEIGHT / 2 or new_head[1] > HEIGHT / 2:
+        turtle.bye()
+    else:
 
-    # Remove last segment
-    snake.pop(0)
+        # Add new head to snake body.
+        snake.append(new_head)
 
-    # Draw snake 
-    for segment in snake:
-        stamper.goto(segment[0], segment[1])
-        stamper.stamp()
+        # Remove last segment
+        snake.pop(0)
 
-    # Refresh screen
-    screen.update()
+        # Draw snake 
+        for segment in snake:
+            stamper.goto(segment[0], segment[1])
+            stamper.stamp()
 
-    # Rinse and repeat
-    turtle.ontimer(move_snake, DELAY)
+        # Refresh screen
+        screen.update()
+
+        # Rinse and repeat
+        turtle.ontimer(game_loop, DELAY)
 
 screen = turtle.Screen()
 screen.setup(WIDTH, HEIGHT)
@@ -86,7 +91,7 @@ for segment in snake:
     stamper.stamp()
 
 # Set animation in motion
-move_snake()
+game_loop()
 
 
 # Finish nicely
