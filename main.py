@@ -45,7 +45,7 @@ def game_loop():
 
     # Check collisions
     if new_head in snake or new_head[0] < - WIDTH / 2 or new_head[0] > WIDTH / 2 or new_head[1] < - HEIGHT / 2 or new_head[1] > HEIGHT / 2:
-        turtle.bye()
+        reset()
     else:
 
         # Add new head to snake body.
@@ -88,6 +88,16 @@ def get_distance(pos1, pos2):
     distance = ((y2 - y1) ** 2 + (x2 - x1) ** 2) ** 0.5   # Pythagoras' Theorem
     return distance
 
+def reset():
+    global score, snake, snake_direction, food_pos
+    score = 0
+    # Create snake as a list of coordiante pairs
+    snake = [[0, 0], [20, 0], [40, 0], [60, 0]]
+    snake_direction = "up"
+    food_pos = get_random_food_pos()
+    food.goto(food_pos)
+    game_loop()
+
 screen = turtle.Screen()
 screen.setup(WIDTH, HEIGHT)
 screen.title("Snake")
@@ -106,15 +116,6 @@ stamper = turtle.Turtle()
 stamper.shape("square")
 stamper.penup()
 
-# Create snake as a list of coordiante pairs
-snake = [[0, 0], [20, 0], [40, 0], [60, 0]]
-snake_direction = "up"
-score = 0
-
-# Draw snake for the first time.
-for segment in snake:
-    stamper.goto(segment[0], segment[1])
-    stamper.stamp()
 
 # Food
 food = turtle.Turtle()
@@ -122,11 +123,10 @@ food.shape("circle")
 food.color("red")
 food.shapesize( FOOD_SIZE / 20)
 food.penup()
-food_pos = get_random_food_pos()
-food.goto(food_pos)
+
 
 # Set animation in motion
-game_loop()
+reset()
 
 
 # Finish nicely
